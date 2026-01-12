@@ -8,13 +8,13 @@
  
   <style>
     :root{
-      --bg:#fbfbf8;          /* бумага */
-      --paper:#ffffff;       /* карточки */
-      --ink:#111111;         /* текст */
-      --muted:#4a4a4a;       /* вторичный текст */
+      --bg:#fbfbf8;
+      --paper:#ffffff;
+      --ink:#111111;
+      --muted:#4a4a4a;
       --line:rgba(0,0,0,.10);
-      --accent:#1f5a3a;      /* зелёный */
-      --accent2:#6b8f6f;     /* светлее */
+      --accent:#1f5a3a;
+      --accent2:#6b8f6f;
       --shadow: 0 18px 45px rgba(0,0,0,.10);
       --radius: 18px;
       --max: 980px;
@@ -26,15 +26,12 @@
       margin:0;
       color:var(--ink);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
- 
-      /* бумажный фон + мягкий зеленый свет */
       background:
         radial-gradient(900px 480px at 15% 10%, rgba(31,90,58,.10), transparent 60%),
         radial-gradient(900px 480px at 90% 28%, rgba(107,143,111,.10), transparent 60%),
         linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
     }
  
-    /* легкое зерно (очень деликатно) */
     body::before{
       content:"";
       position:fixed; inset:0;
@@ -48,7 +45,6 @@
     a{color:inherit}
     .wrap{max-width:var(--max);margin:0 auto;padding:22px}
  
-    /* верхняя панель */
     .topbar{
       position:sticky; top:0; z-index:50;
       background: rgba(255,255,255,.72);
@@ -98,7 +94,6 @@
       background:rgba(31,90,58,.06);
     }
  
-    /* карточки */
     .card{
       background: rgba(255,255,255,.86);
       border:1px solid var(--line);
@@ -112,7 +107,6 @@
       .card.padded{padding:18px}
     }
  
-    /* ботанические уголки (SVG) */
     .leaf-corner{
       position:absolute;
       width:210px; height:210px;
@@ -126,7 +120,6 @@
     .leaf-corner.tr{top:-40px;right:-55px;transform:rotate(40deg)}
     .leaf-corner.bl{bottom:-55px;left:-55px;transform:rotate(220deg)}
  
-    /* герой */
     .hero{
       padding:30px 0 14px;
       display:grid;
@@ -146,7 +139,6 @@
       margin:0 0 12px;
     }
  
-    /* заголовки более “свадебные” (серф + курсив) */
     .title{
       font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
       font-weight:700;
@@ -183,7 +175,6 @@
       line-height:1.7;
     }
  
-    /* кнопки */
     .ctaRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
     .btn{
       display:inline-flex; align-items:center; justify-content:center; gap:10px;
@@ -220,7 +211,6 @@
     }
     .icon{width:16px;height:16px;opacity:.95}
  
-    /* мини-колонки */
     .mini{display:grid;grid-template-columns:1fr;gap:12px}
     .stat{
       padding:16px;
@@ -279,7 +269,6 @@
       color: rgba(0,0,0,.70);
     }
  
-    /* форма */
     form{display:grid; gap:10px; margin-top:10px}
     .row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
     @media (max-width: 640px){ .row{grid-template-columns:1fr} }
@@ -307,7 +296,6 @@
       text-align:center;
     }
  
-    /* мягкое появление */
     .reveal{
       opacity:0;
       transform: translateY(8px);
@@ -318,7 +306,6 @@
       transform: translateY(0);
     }
  
-    /* декоративный разделитель */
     .divider{
       display:flex; align-items:center; gap:10px;
       margin:14px 0 0;
@@ -331,6 +318,146 @@
       font-size:16px;
       letter-spacing:.4px;
     }
+ 
+    /* ====== ГАЛЕРЕЯ ====== */
+    .galleryGrid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:10px;
+      margin-top:12px;
+    }
+    @media (max-width: 900px){ .galleryGrid{grid-template-columns: repeat(3, 1fr);} }
+    @media (max-width: 640px){ .galleryGrid{grid-template-columns: repeat(2, 1fr);} }
+    .gItem{
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#fff;
+      overflow:hidden;
+      position:relative;
+      cursor: zoom-in;
+      box-shadow: 0 10px 22px rgba(0,0,0,.06);
+      aspect-ratio: 4 / 3;
+    }
+    .gItem img{
+      width:100%; height:100%;
+      object-fit: cover;
+      display:block;
+      transform: scale(1.02);
+      transition: transform .35s ease, filter .35s ease;
+    }
+    .gItem:hover img{ transform: scale(1.07); filter: saturate(1.04) contrast(1.02); }
+    .gCap{
+      position:absolute; left:10px; right:10px; bottom:10px;
+      padding:8px 10px;
+      border-radius:12px;
+      background: rgba(255,255,255,.78);
+      border:1px solid rgba(0,0,0,.10);
+      backdrop-filter: blur(8px);
+      color: rgba(0,0,0,.78);
+      font-size:12px;
+      display:flex; justify-content:space-between; gap:10px;
+      align-items:center;
+    }
+    .gCap .tag{
+      color: rgba(31,90,58,.95);
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+ 
+    /* Лайтбокс */
+    .lightbox{
+      position:fixed; inset:0;
+      background: rgba(10,10,10,.72);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:200;
+      padding:18px;
+    }
+    .lightbox.on{display:flex}
+    .lbCard{
+      width:min(980px, 100%);
+      background: rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.28);
+      border-radius: 18px;
+      box-shadow: 0 24px 70px rgba(0,0,0,.35);
+      overflow:hidden;
+      position:relative;
+    }
+    .lbImg{
+      width:100%;
+      height:min(70vh, 720px);
+      background:#111;
+      display:block;
+      object-fit:contain;
+    }
+    .lbBar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:12px 12px;
+      border-top:1px solid rgba(0,0,0,.10);
+      color: rgba(0,0,0,.78);
+      background: rgba(255,255,255,.86);
+    }
+    .lbTitle{
+      font-size:13px;
+      color: rgba(0,0,0,.70);
+      line-height:1.35;
+    }
+    .lbBtns{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    .lbBtn{
+      border:1px solid rgba(0,0,0,.14);
+      background:#fff;
+      border-radius:999px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-weight:700;
+      color: rgba(0,0,0,.80);
+    }
+    .lbBtn:hover{ border-color: rgba(31,90,58,.35); box-shadow: 0 10px 20px rgba(0,0,0,.10); }
+    .lbClose{
+      position:absolute;
+      top:10px; right:10px;
+      width:40px; height:40px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.35);
+      background: rgba(10,10,10,.40);
+      color:#fff;
+      cursor:pointer;
+      display:grid; place-items:center;
+      font-size:18px;
+      backdrop-filter: blur(6px);
+    }
+    .lbClose:hover{background: rgba(10,10,10,.55)}
+ 
+    /* ====== Мини-карта ====== */
+    .mapWrap{
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow: 0 12px 26px rgba(0,0,0,.08);
+    }
+    .mapWrap iframe{
+      width:100%;
+      height:330px;
+      border:0;
+      display:block;
+    }
+    @media (max-width: 640px){
+      .mapWrap iframe{height:280px}
+    }
+ 
+    .hintList{
+      margin:10px 0 0;
+      padding-left:18px;
+      color: rgba(0,0,0,.68);
+      line-height:1.7;
+    }
+    .hintList li{ margin:6px 0; }
+ 
   </style>
 </head>
  
@@ -343,6 +470,8 @@
       </div>
       <nav class="nav">
         <a href="#details">Детали</a>
+        <a href="#gallery">Фото</a>
+        <a href="#route">Как добраться</a>
         <a href="#plan">Программа</a>
         <a href="#dresscode">Дресс-код</a>
         <a href="#transfer">Трансфер</a>
@@ -355,7 +484,6 @@
   <main class="wrap">
     <div class="hero">
       <div class="card padded reveal">
-        <!-- ботанические углы -->
         <svg class="leaf-corner tl" viewBox="0 0 220 220" aria-hidden="true">
           <g fill="none" stroke="rgba(31,90,58,.85)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
             <path d="M40 170c45-68 85-105 150-125" />
@@ -372,7 +500,6 @@
             <path d="M148 66c-8 2-15 7-19 14 8 3 17 1 23-3 5-4 6-8-4-11z"/>
           </g>
         </svg>
- 
         <svg class="leaf-corner br" viewBox="0 0 220 220" aria-hidden="true">
           <g fill="none" stroke="rgba(31,90,58,.85)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
             <path d="M40 170c45-68 85-105 150-125" />
@@ -513,7 +640,91 @@
           <p class="note" id="copyNote" style="display:none">Адрес скопирован ✅</p>
         </div>
  
-        <div class="card padded reveal" id="plan">
+        <div class="card padded reveal">
+          <h2>Коротко о дне</h2>
+          <p class="p">
+            Дресс-код — <strong>ч/б</strong> 🖤🤍 (зелёный акцент — по желанию 🌿).<br>
+            Вместо цветов — <strong>бутылочка напитка</strong> 🥂<br>
+            Будет трансфер — отметьте в RSVP.
+          </p>
+          <div class="hr"></div>
+          <div class="ctaRow">
+            <a class="btn" href="#gallery">Смотреть фото</a>
+            <a class="btn ghost" href="#route">Как добраться</a>
+          </div>
+          <p class="note">Ниже добавили галерею и мини-карту.</p>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ====== ГАЛЕРЕЯ ====== -->
+    <section id="gallery">
+      <div class="card padded reveal">
+        <h2>Фото</h2>
+        <p class="p">
+          Немного атмосферы 🌿 (сюда можно добавить ваши фото, место, детали декора).
+          Нажмите на фото, чтобы открыть крупно.
+        </p>
+ 
+        <div class="galleryGrid" id="galleryGrid" aria-label="Галерея фотографий"></div>
+ 
+        <p class="note">
+          Хотите свои фото? Внизу в коде есть массив <strong>GALLERY_IMAGES</strong> — замените ссылки.
+        </p>
+      </div>
+    </section>
+ 
+    <!-- ====== КАК ДОБРАТЬСЯ / ПАРКОВКА + МИНИ-КАРТА ====== -->
+    <section id="route">
+      <div class="grid">
+        <div class="card padded reveal">
+          <h2>Как добраться и парковка</h2>
+          <p class="p">
+            Для удобства мы добавили подсказки и карту.
+            Если поедете на своём авто — пожалуйста, приезжайте заранее, чтобы спокойно припарковаться.
+          </p>
+ 
+          <ul class="hintList">
+            <li><strong>Навигатор:</strong> по запросу “Усадьба «Николаево»” или по адресу из раздела “Где и когда”.</li>
+            <li><strong>Парковка:</strong> на территории / рядом с усадьбой (следуйте указателям и просьбам организаторов).</li>
+            <li><strong>Опоздания:</strong> если задерживаетесь — напишите организатору (контакт ниже).</li>
+            <li><strong>Трансфер:</strong> если нужен — отметьте в RSVP, мы сообщим детали ближе к дате.</li>
+          </ul>
+ 
+          <div class="hr"></div>
+          <div class="ctaRow">
+            <a class="btn primary" id="mapsPrimaryBtn" target="_blank" rel="noopener">Открыть в Google Maps</a>
+            <button class="btn ghost" id="copyPlaceBtn" type="button">Скопировать “место”</button>
+          </div>
+          <p class="note" id="copyPlaceNote" style="display:none">Скопировано ✅</p>
+        </div>
+ 
+        <div class="card padded reveal">
+          <h2>Мини-карта</h2>
+          <p class="p" style="margin-bottom:10px">
+            Можно приблизить/отдалить и открыть в отдельной вкладке.
+          </p>
+ 
+          <div class="mapWrap">
+            <iframe
+              id="mapFrame"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen
+              title="Карта — Усадьба Николаево">
+            </iframe>
+          </div>
+ 
+          <p class="note" style="margin-top:10px">
+            Если карта не отображается — откройте “Google Maps” кнопкой слева.
+          </p>
+        </div>
+      </div>
+    </section>
+ 
+    <section id="plan">
+      <div class="grid">
+        <div class="card padded reveal">
           <h2>Программа дня</h2>
           <p class="p">Тайминг ориентировочный (возможны небольшие изменения).</p>
           <ul class="list">
@@ -526,12 +737,8 @@
             <li><div><div class="time">23:30</div><div class="desc">Завершение вечера · трансфер</div></div><div class="right">Transfer</div></li>
           </ul>
         </div>
-      </div>
-    </section>
  
-    <section id="dresscode">
-      <div class="grid">
-        <div class="card padded reveal">
+        <div class="card padded reveal" id="dresscode">
           <h2>Дресс-код</h2>
           <p class="p">
             <strong>Чёрно-белая палитра</strong> 🖤🤍<br>
@@ -545,10 +752,10 @@
             <span class="badge">молочный</span>
             <span class="badge">оливковый акцент</span>
           </div>
-        </div>
  
-        <div class="card padded reveal">
-          <h2>Пожелания</h2>
+          <div class="hr"></div>
+ 
+          <h2 style="margin-top:0">Пожелания</h2>
           <p class="p">
             Пожалуйста, <strong>вместо цветов</strong> подарите <strong>бутылочку любимого напитка</strong> 🥂<br>
             Мы с теплом откроем её в один из уютных вечеров и вспомним вас.
@@ -695,21 +902,83 @@
     </footer>
   </main>
  
+  <!-- ====== LIGHTBOX (галерея) ====== -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lbCard" role="dialog" aria-modal="true" aria-label="Просмотр фото">
+      <button class="lbClose" id="lbClose" aria-label="Закрыть">✕</button>
+      <img class="lbImg" id="lbImg" alt="" />
+      <div class="lbBar">
+        <div class="lbTitle" id="lbTitle"></div>
+        <div class="lbBtns">
+          <button class="lbBtn" id="lbPrev" type="button">←</button>
+          <button class="lbBtn" id="lbNext" type="button">→</button>
+          <button class="lbBtn" id="lbOpen" type="button">Открыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
   <script>
     // ====== НАСТРОЙКИ ======
     const weddingDateLocal = new Date(2026, 7, 21, 15, 0, 0); // 7 = август
     const addressText = "Витебский район, Вороновский сельсовет, д. Дрюково, ул. Центральная, 32";
     const placeText = "Усадьба «Николаево»";
  
-    // 1) КАРТА
+    // 1) КАРТА (кнопки)
     const mapsQuery = encodeURIComponent(placeText + ", " + addressText);
     const mapsUrl = "https://www.google.com/maps/search/?api=1&query=" + mapsQuery;
  
-    // 2) RSVP -> GOOGLE SHEETS (позже вставим сюда ссылку из Apps Script) const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyU1T7nihR_oqbwWHgWGCmoRBx6g7a_JxquL3VyVl668RORpaqeAek6BkAxsvoZ9jy0/exec";
+    // 2) Встроенная карта (iframe) — без ключей, через Google Maps Embed
+    const embedUrl = "https://www.google.com/maps?q=" + mapsQuery + "&output=embed";
+ 
+    // 3) RSVP -> GOOGLE SHEETS (вставишь ссылку из Apps Script Web App)
+    const SCRIPT_URL = ""; // <-- СЮДА ВСТАВЬ ВЕБ-ССЫЛКУ ИЗ DEPLOY
+ 
+    // ====== ГАЛЕРЕЯ: ЗАМЕНИ ССЫЛКИ НА СВОИ ФОТО ======
+    // Можно вставлять:
+    // - ссылки на ваши фото (если они доступны по прямому URL)
+    // - или dataURL (если встроишь)
+    // - или фото, загруженные на любой хостинг/облако с прямой ссылкой
+    const GALLERY_IMAGES = [
+      {
+        src: "https://images.unsplash.com/photo-1529634897501-3c0b1d0c8fbd?auto=format&fit=crop&w=1400&q=70",
+        title: "Лёгкая ботаника · детали"
+      },
+      {
+        src: "https://images.unsplash.com/photo-1523437237164-d442d57cc3c9?auto=format&fit=crop&w=1400&q=70",
+        title: "Свечи и уютный вечер"
+      },
+      {
+        src: "https://images.unsplash.com/photo-1529516548873-9ce57c8f155e?auto=format&fit=crop&w=1400&q=70",
+        title: "Свадебная эстетика"
+      },
+      {
+        src: "https://images.unsplash.com/photo-1520857014576-2c4f4c972b57?auto=format&fit=crop&w=1400&q=70",
+        title: "Букет / зелёные акценты"
+      },
+      {
+        src: "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?auto=format&fit=crop&w=1400&q=70",
+        title: "Место · атмосфера"
+      },
+      {
+        src: "https://images.unsplash.com/photo-1523438097201-512ae7d59f32?auto=format&fit=crop&w=1400&q=70",
+        title: "Детали декора"
+      },
+      {
+        src: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=70",
+        title: "Праздник"
+      },
+      {
+        src: "https://images.unsplash.com/photo-1520857014576-3b01a0d9bce2?auto=format&fit=crop&w=1400&q=70",
+        title: "Тёплые моменты"
+      }
+    ];
  
     // ====== КНОПКИ КАРТЫ ======
     document.getElementById("routeBtn").href = mapsUrl;
     document.getElementById("mapsBtn").href = mapsUrl;
+    document.getElementById("mapsPrimaryBtn").href = mapsUrl;
+    document.getElementById("mapFrame").src = embedUrl;
  
     // ====== КОПИРОВАНИЕ АДРЕСА ======
     const copyBtn = document.getElementById("copyAddressBtn");
@@ -721,6 +990,20 @@
         setTimeout(()=> copyNote.style.display="none", 1800);
       }catch(e){
         prompt("Скопируйте адрес:", addressText);
+      }
+    });
+ 
+    // Копировать "место" (название + адрес)
+    const copyPlaceBtn = document.getElementById("copyPlaceBtn");
+    const copyPlaceNote = document.getElementById("copyPlaceNote");
+    copyPlaceBtn.addEventListener("click", async () => {
+      const text = placeText + " — " + addressText;
+      try{
+        await navigator.clipboard.writeText(text);
+        copyPlaceNote.style.display = "block";
+        setTimeout(()=> copyPlaceNote.style.display="none", 1800);
+      }catch(e){
+        prompt("Скопируйте:", text);
       }
     });
  
@@ -749,11 +1032,84 @@
     }
     tick(); setInterval(tick, 1000);
  
+    // ====== ГАЛЕРЕЯ: РЕНДЕР + LIGHTBOX ======
+    const galleryGrid = document.getElementById("galleryGrid");
+    const lightbox = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lbImg");
+    const lbTitle = document.getElementById("lbTitle");
+    const lbPrev = document.getElementById("lbPrev");
+    const lbNext = document.getElementById("lbNext");
+    const lbClose = document.getElementById("lbClose");
+    const lbOpen = document.getElementById("lbOpen");
+ 
+    let currentIndex = 0;
+ 
+    function openLightbox(i){
+      currentIndex = i;
+      const item = GALLERY_IMAGES[currentIndex];
+      lbImg.src = item.src;
+      lbImg.alt = item.title || "Фото";
+      lbTitle.textContent = (item.title ? item.title : "Фото") + " · " + (currentIndex + 1) + "/" + GALLERY_IMAGES.length;
+      lbOpen.onclick = () => window.open(item.src, "_blank", "noopener");
+      lightbox.classList.add("on");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+    function closeLightbox(){
+      lightbox.classList.remove("on");
+      lightbox.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      // лёгкая очистка
+      setTimeout(()=>{ lbImg.src = ""; }, 120);
+    }
+    function prev(){
+      const i = (currentIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+      openLightbox(i);
+    }
+    function next(){
+      const i = (currentIndex + 1) % GALLERY_IMAGES.length;
+      openLightbox(i);
+    }
+ 
+    // Рендер карточек
+    GALLERY_IMAGES.forEach((item, idx) => {
+      const el = document.createElement("button");
+      el.type = "button";
+      el.className = "gItem";
+      el.setAttribute("aria-label", "Открыть фото: " + (item.title || ("Фото " + (idx+1))));
+      el.innerHTML = `
+        <img loading="lazy" src="${item.src}" alt="${(item.title || "Фото").replace(/"/g,'&quot;')}" />
+        <div class="gCap">
+          <span>${item.title ? item.title : ("Фото " + (idx+1))}</span>
+          <span class="tag">🌿</span>
+        </div>
+      `;
+      el.addEventListener("click", ()=> openLightbox(idx));
+      galleryGrid.appendChild(el);
+    });
+ 
+    lbPrev.addEventListener("click", prev);
+    lbNext.addEventListener("click", next);
+    lbClose.addEventListener("click", closeLightbox);
+ 
+    // закрытие по клику на фон
+    lightbox.addEventListener("click", (e)=>{
+      if(e.target === lightbox) closeLightbox();
+    });
+ 
+    // клавиатура
+    window.addEventListener("keydown", (e)=>{
+      if(!lightbox.classList.contains("on")) return;
+      if(e.key === "Escape") closeLightbox();
+      if(e.key === "ArrowLeft") prev();
+      if(e.key === "ArrowRight") next();
+    });
+ 
     // ====== RSVP: ЧЕРНОВИК + ОТПРАВКА В GOOGLE SHEETS ======
     const form = document.getElementById("rsvpForm");
     const saveDraftBtn = document.getElementById("saveDraftBtn");
     const statusNote = document.getElementById("statusNote");
-    const draftKey = "wedding_rsvp_draft_v2_light";
+    const draftKey = "wedding_rsvp_draft_v3_light_gallery";
  
     function getFormData(){
       const data = new FormData(form);
@@ -809,7 +1165,6 @@
       statusNote.textContent = "";
  
       try {
-        // no-cors — чтобы работало на любом статическом хостинге без возни с CORS
         await fetch(SCRIPT_URL, {
           method: "POST",
           mode: "no-cors",
