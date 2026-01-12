@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ru">
 <head>
@@ -9,184 +8,339 @@
  
   <style>
     :root{
-      --bg:#0f0f10;
-      --card:#141416;
-      --text:#f2f2f2;
-      --muted:#bdbdbd;
-      --line:#2a2a2e;
-      --accent:#ffffff;
-      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --bg:#fbfbf8;          /* бумага */
+      --paper:#ffffff;       /* карточки */
+      --ink:#111111;         /* текст */
+      --muted:#4a4a4a;       /* вторичный текст */
+      --line:rgba(0,0,0,.10);
+      --accent:#1f5a3a;      /* зелёный */
+      --accent2:#6b8f6f;     /* светлее */
+      --shadow: 0 18px 45px rgba(0,0,0,.10);
       --radius: 18px;
+      --max: 980px;
     }
+ 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
+      color:var(--ink);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+ 
+      /* бумажный фон + мягкий зеленый свет */
       background:
-        radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,.07), transparent 55%),
-        radial-gradient(900px 500px at 80% 35%, rgba(255,255,255,.06), transparent 60%),
-        linear-gradient(180deg, #0b0b0c 0%, var(--bg) 100%);
-      color:var(--text);
-      letter-spacing:.2px;
+        radial-gradient(900px 480px at 15% 10%, rgba(31,90,58,.10), transparent 60%),
+        radial-gradient(900px 480px at 90% 28%, rgba(107,143,111,.10), transparent 60%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
     }
+ 
+    /* легкое зерно (очень деликатно) */
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
+      opacity:.18;
+      mix-blend-mode:multiply;
+    }
+ 
     a{color:inherit}
-    .wrap{max-width:980px;margin:0 auto;padding:20px}
+    .wrap{max-width:var(--max);margin:0 auto;padding:22px}
+ 
+    /* верхняя панель */
     .topbar{
-      position:sticky; top:0; z-index:20;
-      backdrop-filter: blur(10px);
-      background: rgba(15,15,16,.55);
-      border-bottom:1px solid rgba(255,255,255,.08);
+      position:sticky; top:0; z-index:50;
+      background: rgba(255,255,255,.72);
+      backdrop-filter: blur(12px);
+      border-bottom:1px solid var(--line);
     }
     .topbar .inner{
-      display:flex; align-items:center; justify-content:space-between;
+      max-width:var(--max);
+      margin:0 auto;
       padding:12px 20px;
-      max-width:980px;margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
       gap:12px;
     }
-    .brand{display:flex; gap:10px; align-items:center; font-weight:600; white-space:nowrap}
-    .dot{width:8px;height:8px;border-radius:999px;background:var(--accent);opacity:.9}
-    .nav{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:700;
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+    .seal{
+      width:30px;height:30px;border-radius:999px;
+      border:1px solid rgba(31,90,58,.30);
+      background: radial-gradient(circle at 30% 30%, rgba(31,90,58,.18), rgba(31,90,58,.05));
+      display:grid; place-items:center;
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+      color:var(--accent);
+      font-size:14px;
+      user-select:none;
+    }
+    .nav{
+      display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;
+    }
     .nav a{
       text-decoration:none;
-      color:var(--muted);
+      color:rgba(0,0,0,.62);
       font-size:14px;
-      padding:6px 10px;
+      padding:7px 10px;
       border-radius:999px;
       border:1px solid transparent;
+      transition:.2s ease;
     }
-    .nav a:hover{color:var(--text);border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.06)}
+    .nav a:hover{
+      color:var(--ink);
+      border-color:rgba(31,90,58,.22);
+      background:rgba(31,90,58,.06);
+    }
+ 
+    /* карточки */
+    .card{
+      background: rgba(255,255,255,.86);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .card.padded{padding:24px}
+    @media (max-width: 520px){
+      .card.padded{padding:18px}
+    }
+ 
+    /* ботанические уголки (SVG) */
+    .leaf-corner{
+      position:absolute;
+      width:210px; height:210px;
+      opacity:.30;
+      pointer-events:none;
+      filter: drop-shadow(0 14px 18px rgba(0,0,0,.10));
+    }
+    .leaf-corner.tl{top:-40px;left:-55px;transform:rotate(-10deg)}
+    .leaf-corner.br{bottom:-55px;right:-55px;transform:rotate(170deg)}
+    .leaf-corner.small{width:150px;height:150px;opacity:.22}
+    .leaf-corner.tr{top:-40px;right:-55px;transform:rotate(40deg)}
+    .leaf-corner.bl{bottom:-55px;left:-55px;transform:rotate(220deg)}
+ 
+    /* герой */
     .hero{
-      padding:42px 0 18px;
+      padding:30px 0 14px;
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:18px;
+      grid-template-columns: 1.15fr .85fr;
+      gap:16px;
       align-items:stretch;
     }
-    @media (max-width: 860px){
+    @media (max-width: 900px){
       .hero{grid-template-columns:1fr}
     }
-    .card{
-      background: rgba(20,20,22,.72);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .card.padded{padding:22px}
+ 
     .kicker{
-      font-size:13px;
-      color:var(--muted);
+      font-size:12px;
+      color:rgba(0,0,0,.60);
       text-transform:uppercase;
-      letter-spacing:2.4px;
-      margin:0 0 14px;
+      letter-spacing:2.6px;
+      margin:0 0 12px;
     }
-    h1{
-      font-size:48px;
-      line-height:1.05;
-      margin:0 0 10px;
-      letter-spacing:-.8px;
+ 
+    /* заголовки более “свадебные” (серф + курсив) */
+    .title{
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      font-weight:700;
+      font-size:52px;
+      line-height:1.02;
+      margin:0 0 8px;
+      letter-spacing:-.6px;
     }
-    @media (max-width: 520px){
-      h1{font-size:40px}
+    @media (max-width: 520px){ .title{font-size:42px} }
+ 
+    .script{
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      font-style:italic;
+      font-weight:500;
+      color:rgba(0,0,0,.82);
     }
+ 
     .sub{
       font-size:18px;
-      color:var(--muted);
+      color:rgba(0,0,0,.65);
       margin:0 0 18px;
+      line-height:1.5;
     }
+ 
+    .hr{
+      height:1px;
+      background:var(--line);
+      margin:16px 0;
+    }
+ 
+    .p{
+      margin:0;
+      color:rgba(0,0,0,.70);
+      line-height:1.7;
+    }
+ 
+    /* кнопки */
     .ctaRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
     .btn{
       display:inline-flex; align-items:center; justify-content:center; gap:10px;
       padding:12px 14px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.08);
-      color:var(--text);
+      border:1px solid rgba(0,0,0,.14);
+      background: rgba(255,255,255,.74);
+      color:var(--ink);
       text-decoration:none;
-      font-weight:600;
+      font-weight:650;
       cursor:pointer;
-      transition: transform .06s ease, background .2s ease, border-color .2s ease;
+      transition: transform .06s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
       user-select:none;
     }
-    .btn:hover{background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.26)}
+    .btn:hover{
+      background:#fff;
+      border-color:rgba(31,90,58,.28);
+      box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    }
     .btn:active{transform: translateY(1px)}
     .btn.primary{
-      background: rgba(255,255,255,.92);
-      color:#0f0f10;
-      border-color: rgba(255,255,255,.92);
+      background: linear-gradient(180deg, rgba(31,90,58,.96), rgba(31,90,58,.86));
+      color:#fff;
+      border-color: rgba(31,90,58,.52);
     }
-    .btn.primary:hover{background:#fff;border-color:#fff}
-    .btn.ghost{background:transparent}
+    .btn.primary:hover{
+      border-color: rgba(31,90,58,.70);
+      box-shadow: 0 14px 32px rgba(31,90,58,.18);
+    }
+    .btn.ghost{
+      background: transparent;
+      border-color: rgba(31,90,58,.22);
+      color: rgba(0,0,0,.78);
+    }
     .icon{width:16px;height:16px;opacity:.95}
+ 
+    /* мини-колонки */
     .mini{display:grid;grid-template-columns:1fr;gap:12px}
     .stat{
       padding:16px;
       border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      background: rgba(31,90,58,.04);
     }
-    .stat .t{font-size:13px;color:var(--muted);margin:0 0 8px}
-    .stat .v{font-size:18px;font-weight:650;margin:0}
+    .stat .t{font-size:12px;color:rgba(0,0,0,.58);margin:0 0 8px;text-transform:uppercase;letter-spacing:1.6px}
+    .stat .v{font-size:18px;font-weight:700;margin:0}
+ 
     .countdown{display:flex; gap:10px; flex-wrap:wrap}
     .pill{
-      min-width:92px;
+      min-width:96px;
       text-align:center;
       padding:10px 12px;
       border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.78);
     }
-    .pill .n{font-size:22px;font-weight:750;margin:0}
-    .pill .l{font-size:12px;color:var(--muted);margin:2px 0 0}
+    .pill .n{
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      font-size:24px;font-weight:800;margin:0;
+    }
+    .pill .l{font-size:12px;color:rgba(0,0,0,.58);margin:2px 0 0}
+ 
     section{padding:10px 0}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
-    h2{margin:0 0 10px;font-size:22px;letter-spacing:-.2px}
-    .p{margin:0;color:var(--muted);line-height:1.6}
+    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
+ 
+    h2{
+      margin:0 0 10px;
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      font-size:22px;
+      letter-spacing:-.2px;
+    }
+ 
     .list{margin:12px 0 0;padding:0;list-style:none}
     .list li{
       padding:12px 0;
-      border-top:1px solid rgba(255,255,255,.10);
+      border-top:1px solid var(--line);
       display:flex; gap:10px; justify-content:space-between; align-items:flex-start;
     }
     .list li:first-child{border-top:none;padding-top:4px}
-    .time{font-variant-numeric: tabular-nums; color:var(--text); font-weight:650}
-    .desc{color:var(--muted)}
-    .right{color:var(--muted)}
+ 
+    .time{font-variant-numeric: tabular-nums; color:var(--ink); font-weight:800}
+    .desc{color:rgba(0,0,0,.66)}
+    .right{color:rgba(0,0,0,.52)}
+ 
     .badgeRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
     .badge{
       font-size:13px;
       padding:8px 10px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.05);
-      color:var(--muted);
+      border:1px solid rgba(31,90,58,.24);
+      background: rgba(31,90,58,.06);
+      color: rgba(0,0,0,.70);
     }
+ 
+    /* форма */
     form{display:grid; gap:10px; margin-top:10px}
     .row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
     @media (max-width: 640px){ .row{grid-template-columns:1fr} }
-    label{font-size:12px;color:var(--muted)}
+    label{font-size:12px;color:rgba(0,0,0,.60)}
     input, select, textarea{
       width:100%;
       padding:12px 12px;
       border-radius:12px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.04);
-      color:var(--text);
+      border:1px solid rgba(0,0,0,.16);
+      background: rgba(255,255,255,.86);
+      color:var(--ink);
       outline:none;
     }
-    input:focus, select:focus, textarea:focus{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.06)}
-    textarea{min-height:100px;resize:vertical}
-    .note{font-size:12px;color:var(--muted);margin-top:8px}
-    footer{padding:26px 0 50px;color:var(--muted);text-align:center}
-    .hr{height:1px;background:rgba(255,255,255,.10);margin:16px 0}
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(31,90,58,.45);
+      box-shadow: 0 0 0 3px rgba(31,90,58,.12);
+      background:#fff;
+    }
+    textarea{min-height:105px;resize:vertical}
+    .note{font-size:12px;color:rgba(0,0,0,.56);margin-top:8px}
+ 
+    footer{
+      padding:26px 0 50px;
+      color:rgba(0,0,0,.55);
+      text-align:center;
+    }
+ 
+    /* мягкое появление */
+    .reveal{
+      opacity:0;
+      transform: translateY(8px);
+      transition: .6s ease;
+    }
+    .reveal.on{
+      opacity:1;
+      transform: translateY(0);
+    }
+ 
+    /* декоративный разделитель */
+    .divider{
+      display:flex; align-items:center; gap:10px;
+      margin:14px 0 0;
+      color: rgba(31,90,58,.75);
+    }
+    .divider .line{height:1px;flex:1;background:rgba(31,90,58,.20)}
+    .divider .mark{
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      font-style:italic;
+      font-size:16px;
+      letter-spacing:.4px;
+    }
   </style>
 </head>
  
 <body>
   <div class="topbar">
     <div class="inner">
-      <div class="brand"><span class="dot"></span> Александр & Гюнель</div>
+      <div class="brand">
+        <div class="seal">A&G</div>
+        Александр & Гюнель
+      </div>
       <nav class="nav">
         <a href="#details">Детали</a>
         <a href="#plan">Программа</a>
@@ -200,10 +354,51 @@
  
   <main class="wrap">
     <div class="hero">
-      <div class="card padded">
+      <div class="card padded reveal">
+        <!-- ботанические углы -->
+        <svg class="leaf-corner tl" viewBox="0 0 220 220" aria-hidden="true">
+          <g fill="none" stroke="rgba(31,90,58,.85)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M40 170c45-68 85-105 150-125" />
+            <path d="M62 155c15-25 28-40 58-64" />
+            <path d="M78 142c12-18 24-30 44-45" />
+            <path d="M95 130c10-13 18-22 34-32" />
+            <path d="M53 160c18 2 30 0 44-6" />
+            <path d="M68 145c18 1 28-1 40-7" />
+            <path d="M84 132c14 1 23-1 34-6" />
+          </g>
+          <g fill="rgba(31,90,58,.18)">
+            <path d="M132 78c-10 2-20 8-26 18 10 4 22 2 30-4 6-6 8-10-4-14z"/>
+            <path d="M112 98c-9 3-16 9-20 18 10 3 20 1 27-5 6-5 7-9-7-13z"/>
+            <path d="M148 66c-8 2-15 7-19 14 8 3 17 1 23-3 5-4 6-8-4-11z"/>
+          </g>
+        </svg>
+ 
+        <svg class="leaf-corner br" viewBox="0 0 220 220" aria-hidden="true">
+          <g fill="none" stroke="rgba(31,90,58,.85)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M40 170c45-68 85-105 150-125" />
+            <path d="M62 155c15-25 28-40 58-64" />
+            <path d="M78 142c12-18 24-30 44-45" />
+            <path d="M95 130c10-13 18-22 34-32" />
+            <path d="M53 160c18 2 30 0 44-6" />
+            <path d="M68 145c18 1 28-1 40-7" />
+            <path d="M84 132c14 1 23-1 34-6" />
+          </g>
+          <g fill="rgba(31,90,58,.18)">
+            <path d="M132 78c-10 2-20 8-26 18 10 4 22 2 30-4 6-6 8-10-4-14z"/>
+            <path d="M112 98c-9 3-16 9-20 18 10 3 20 1 27-5 6-5 7-9-7-13z"/>
+            <path d="M148 66c-8 2-15 7-19 14 8 3 17 1 23-3 5-4 6-8-4-11z"/>
+          </g>
+        </svg>
+ 
         <p class="kicker">свадебное приглашение</p>
-        <h1>Александр<br>&amp; Гюнель</h1>
-        <p class="sub">Витебск · 21 августа 2026 · начало в 15:00</p>
+ 
+        <h1 class="title">
+          Александр <span class="script">&amp;</span> Гюнель
+        </h1>
+ 
+        <p class="sub">
+          Витебск · 21 августа 2026 · начало в <span class="script">15:00</span>
+        </p>
  
         <div class="ctaRow">
           <a class="btn primary" href="#rsvp">
@@ -224,13 +419,21 @@
           <a class="btn ghost" href="#details">Смотреть детали</a>
         </div>
  
+        <div class="divider" aria-hidden="true">
+          <div class="line"></div>
+          <div class="mark">with love</div>
+          <div class="line"></div>
+        </div>
+ 
         <div class="hr"></div>
  
         <p class="p">
-          Мы будем счастливы разделить этот день с вами. Приходите праздновать нашу свадьбу 🤍
+          Мы будем счастливы разделить этот день с вами.
+          <span class="script">Приходите праздновать нашу свадьбу</span> 🤍
         </p>
  
         <div class="badgeRow">
+          <span class="badge">🌿 зелёные акценты</span>
           <span class="badge">🖤🤍 чёрно-белый дресс-код</span>
           <span class="badge">🥂 вместо цветов — бутылочка напитка</span>
           <span class="badge">🚌 будет трансфер</span>
@@ -238,7 +441,19 @@
       </div>
  
       <div class="mini">
-        <div class="card padded">
+        <div class="card padded reveal">
+          <svg class="leaf-corner small tr" viewBox="0 0 220 220" aria-hidden="true">
+            <g fill="none" stroke="rgba(31,90,58,.85)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M40 170c45-68 85-105 150-125" />
+              <path d="M62 155c15-25 28-40 58-64" />
+              <path d="M78 142c12-18 24-30 44-45" />
+              <path d="M95 130c10-13 18-22 34-32" />
+            </g>
+            <g fill="rgba(31,90,58,.18)">
+              <path d="M132 78c-10 2-20 8-26 18 10 4 22 2 30-4 6-6 8-10-4-14z"/>
+            </g>
+          </svg>
+ 
           <h2 style="margin-bottom:8px">До свадьбы</h2>
           <div class="countdown" id="countdown" aria-live="polite">
             <div class="pill"><p class="n" id="d">—</p><p class="l">дней</p></div>
@@ -249,14 +464,14 @@
           <p class="note">21.08.2026 · 15:00</p>
         </div>
  
-        <div class="card padded">
+        <div class="card padded reveal">
           <div class="stat">
             <p class="t">Локация</p>
             <p class="v">Усадьба «Николаево»</p>
           </div>
           <div class="stat">
             <p class="t">Адрес</p>
-            <p class="v" style="font-size:16px; font-weight:600; line-height:1.35">
+            <p class="v" style="font-size:16px; font-weight:700; line-height:1.35">
               Витебский район, Вороновский сельсовет,<br>
               д. Дрюково, ул. Центральная, 32
             </p>
@@ -267,7 +482,19 @@
  
     <section id="details">
       <div class="grid">
-        <div class="card padded">
+        <div class="card padded reveal">
+          <svg class="leaf-corner small bl" viewBox="0 0 220 220" aria-hidden="true">
+            <g fill="none" stroke="rgba(31,90,58,.85)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M40 170c45-68 85-105 150-125" />
+              <path d="M62 155c15-25 28-40 58-64" />
+              <path d="M78 142c12-18 24-30 44-45" />
+              <path d="M95 130c10-13 18-22 34-32" />
+            </g>
+            <g fill="rgba(31,90,58,.18)">
+              <path d="M112 98c-9 3-16 9-20 18 10 3 20 1 27-5 6-5 7-9-7-13z"/>
+            </g>
+          </svg>
+ 
           <h2>Где и когда</h2>
           <p class="p">
             <strong>Сбор гостей:</strong> 15:00<br>
@@ -286,9 +513,9 @@
           <p class="note" id="copyNote" style="display:none">Адрес скопирован ✅</p>
         </div>
  
-        <div class="card padded" id="plan">
+        <div class="card padded reveal" id="plan">
           <h2>Программа дня</h2>
-          <p class="p">Стандартный тайминг (возможны небольшие изменения).</p>
+          <p class="p">Тайминг ориентировочный (возможны небольшие изменения).</p>
           <ul class="list">
             <li><div><div class="time">15:00</div><div class="desc">Сбор гостей · приветственный бокал · фото</div></div><div class="right">Welcome</div></li>
             <li><div><div class="time">15:30</div><div class="desc">Церемония</div></div><div class="right">Ceremony</div></li>
@@ -304,21 +531,23 @@
  
     <section id="dresscode">
       <div class="grid">
-        <div class="card padded">
+        <div class="card padded reveal">
           <h2>Дресс-код</h2>
           <p class="p">
             <strong>Чёрно-белая палитра</strong> 🖤🤍<br>
             Будем рады, если вы поддержите стиль вечера образами в чёрно-белых тонах.
+            <span class="script">Зелёные детали</span> (аксессуар/платок/галстук) — по желанию 🌿
           </p>
           <div class="badgeRow">
             <span class="badge">черный</span>
             <span class="badge">белый</span>
             <span class="badge">графит</span>
             <span class="badge">молочный</span>
+            <span class="badge">оливковый акцент</span>
           </div>
         </div>
  
-        <div class="card padded">
+        <div class="card padded reveal">
           <h2>Пожелания</h2>
           <p class="p">
             Пожалуйста, <strong>вместо цветов</strong> подарите <strong>бутылочку любимого напитка</strong> 🥂<br>
@@ -330,7 +559,7 @@
  
     <section id="transfer">
       <div class="grid">
-        <div class="card padded">
+        <div class="card padded reveal">
           <h2>Трансфер</h2>
           <p class="p">
             <strong>Трансфер будет.</strong><br>
@@ -338,7 +567,7 @@
           </p>
         </div>
  
-        <div class="card padded">
+        <div class="card padded reveal">
           <h2>Дети</h2>
           <p class="p">
             Если вы планируете быть <strong>с детьми</strong>, отметьте это, пожалуйста, в RSVP —
@@ -349,7 +578,7 @@
     </section>
  
     <section id="rsvp">
-      <div class="card padded">
+      <div class="card padded reveal">
         <h2>RSVP · Подтверждение участия</h2>
         <p class="p">
           Будем благодарны, если вы подтвердите своё присутствие <strong>до 1 августа 2026 года</strong>.
@@ -427,29 +656,13 @@
           </div>
  
           <p class="note" id="statusNote"></p>
-          <div id="successCard" style="display:none; margin-top:14px;">
-  <div class="card padded" style="background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.16);">
-    <h2 style="margin:0 0 8px;">Спасибо! 💍</h2>
-    <p class="p" style="margin:0;">
-      Ваш ответ получен. Будем рады видеть вас <strong>21 августа 2026</strong> в усадьбе «Николаево».
-    </p>
-    <div class="badgeRow" style="margin-top:12px;">
-      <span class="badge">🕒 начало в 15:00</span>
-      <span class="badge">🖤🤍 чёрно-белый дресс-код</span>
-      <span class="badge">🚌 трансфер будет</span>
-    </div>
-    <p class="note" style="margin-top:12px;">
-      Если планы изменятся — заполните форму ещё раз или свяжитесь с организатором.
-    </p>
-  </div>
-</div>
         </form>
       </div>
     </section>
  
     <section id="contacts">
       <div class="grid">
-        <div class="card padded">
+        <div class="card padded reveal">
           <h2>Контакты</h2>
           <p class="p">По любым вопросам можно обратиться к организатору:</p>
           <div class="hr"></div>
@@ -461,23 +674,24 @@
             <a class="btn" target="_blank" rel="noopener" href="https://wa.me/375295183650">WhatsApp</a>
             <a class="btn" target="_blank" rel="noopener" href="viber://chat?number=%2B375295183650">Viber</a>
           </div>
-          <p class="note">Если у вас не открывается мессенджер — просто позвоните 🙂</p>
+          <p class="note">Если мессенджер не открывается — просто позвоните 🙂</p>
         </div>
  
-        <div class="card padded">
+        <div class="card padded reveal">
           <h2>Небольшая памятка</h2>
           <ul class="list">
             <li><div><div class="time">🕒</div><div class="desc">Приезжайте к 15:00, чтобы спокойно начать праздник.</div></div></li>
-            <li><div><div class="time">🖤🤍</div><div class="desc">Одежда — ч/б тона (можно с минимальными акцентами).</div></div></li>
+            <li><div><div class="time">🖤🤍</div><div class="desc">Одежда — ч/б тона (зелёный акцент — по желанию).</div></div></li>
             <li><div><div class="time">🥂</div><div class="desc">Вместо цветов — бутылочка напитка.</div></div></li>
-            <li><div><div class="time">🚌</div><div class="desc">Трансфер будет — укажите это в RSVP.</div></div></li>
+            <li><div><div class="time">🚌</div><div class="desc">Трансфер будет — отметьте это в RSVP.</div></div></li>
           </ul>
         </div>
       </div>
     </section>
  
-    <footer>
-      Александр & Гюнель · 21.08.2026 · Усадьба «Николаево»
+    <footer class="reveal">
+      <div class="script" style="font-size:18px; margin-bottom:6px;">Александр &amp; Гюнель</div>
+      21.08.2026 · Усадьба «Николаево»
     </footer>
   </main>
  
@@ -491,8 +705,7 @@
     const mapsQuery = encodeURIComponent(placeText + ", " + addressText);
     const mapsUrl = "https://www.google.com/maps/search/?api=1&query=" + mapsQuery;
  
-    // 2) RSVP -> GOOGLE SHEETS (позже вставим сюда ссылку из Apps Script)
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyU1T7nihR_oqbwWHgWGCmoRBx6g7a_JxquL3VyVl668RORpaqeAek6BkAxsvoZ9jy0/exec"; // <-- СЮДА ВСТАВИМ ВЕБ-ССЫЛКУ ИЗ DEPLOY
+    // 2) RSVP -> GOOGLE SHEETS (позже вставим сюда ссылку из Apps Script) const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyU1T7nihR_oqbwWHgWGCmoRBx6g7a_JxquL3VyVl668RORpaqeAek6BkAxsvoZ9jy0/exec";
  
     // ====== КНОПКИ КАРТЫ ======
     document.getElementById("routeBtn").href = mapsUrl;
@@ -540,7 +753,7 @@
     const form = document.getElementById("rsvpForm");
     const saveDraftBtn = document.getElementById("saveDraftBtn");
     const statusNote = document.getElementById("statusNote");
-    const draftKey = "wedding_rsvp_draft_v1";
+    const draftKey = "wedding_rsvp_draft_v2_light";
  
     function getFormData(){
       const data = new FormData(form);
@@ -571,7 +784,7 @@
       e.preventDefault();
  
       if(!SCRIPT_URL){
-        alert("RSVP ещё не подключён к таблице. Я помогу на следующем шаге 🙂");
+        alert("RSVP пока не подключён к таблице. Вставь SCRIPT_URL — и всё заработает 🙂");
         return;
       }
  
@@ -606,15 +819,7 @@
  
         localStorage.removeItem(draftKey);
         form.reset();
-       // скрываем форму
-form.style.display = "none";
- 
-// показываем красивую плашку "Спасибо"
-const successCard = document.getElementById("successCard");
-if (successCard) {
-  successCard.style.display = "block";
-  successCard.scrollIntoView({ behavior: "smooth", block: "start" });
-}
+        alert("Спасибо! Ответ отправлен ✅");
  
       } catch (err) {
         alert("Не получилось отправить 😕 Проверьте интернет и попробуйте ещё раз.");
@@ -623,7 +828,15 @@ if (successCard) {
         submitBtn.textContent = oldText;
       }
     });
+ 
+    // ====== МЯГКОЕ ПОЯВЛЕНИЕ БЛОКОВ ======
+    const items = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver((entries)=>{
+      for(const e of entries){
+        if(e.isIntersecting) e.target.classList.add("on");
+      }
+    }, { threshold: .12 });
+    items.forEach(el => io.observe(el));
   </script>
 </body>
 </html>
-
