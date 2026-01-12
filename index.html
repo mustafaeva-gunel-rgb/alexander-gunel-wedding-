@@ -604,6 +604,18 @@
           body: JSON.stringify(payload)
         });
  localStorage.removeItem(draftKey);
+        // === КРАСИВАЯ ПЛАШКА "СПАСИБО" ===
+ 
+// скрываем форму
+form.style.display = "none";
+ 
+// показываем карточку "Спасибо"
+const successCard = document.getElementById("successCard");
+if (successCard) {
+  successCard.style.display = "block";
+  successCard.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+ 
  
 // блокируем поля и кнопку, чтобы не отправляли повторно случайно
 Array.from(form.elements).forEach(el => el.disabled = true);
@@ -634,6 +646,7 @@ if (successCard) {
   </script>
 </body>
 </html>
+
 
 
 
