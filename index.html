@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -426,9 +427,7 @@
           </div>
  
           <p class="note" id="statusNote"></p>
-          
-        </form>
-        <div id="successCard" style="display:none; margin-top:14px;">
+          <div id="successCard" style="display:none; margin-top:14px;">
   <div class="card padded" style="background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.16);">
     <h2 style="margin:0 0 8px;">Спасибо! 💍</h2>
     <p class="p" style="margin:0;">
@@ -444,6 +443,7 @@
     </p>
   </div>
 </div>
+        </form>
       </div>
     </section>
  
@@ -603,29 +603,9 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
- localStorage.removeItem(draftKey);
-        // === КРАСИВАЯ ПЛАШКА "СПАСИБО" ===
  
-// скрываем форму
-form.style.display = "none";
- 
-// показываем карточку "Спасибо"
-const successCard = document.getElementById("successCard");
-if (successCard) {
-  successCard.style.display = "block";
-  successCard.scrollIntoView({ behavior: "smooth", block: "start" });
-}
- 
- 
-// блокируем поля и кнопку, чтобы не отправляли повторно случайно
-Array.from(form.elements).forEach(el => el.disabled = true);
- 
-// показываем красивую плашку
-const successCard = document.getElementById("successCard");
-if (successCard) {
-  successCard.style.display = "block";
-  successCard.scrollIntoView({ behavior: "smooth", block: "start" });
-}
+        localStorage.removeItem(draftKey);
+        form.reset();
        // скрываем форму
 form.style.display = "none";
  
@@ -646,7 +626,4 @@ if (successCard) {
   </script>
 </body>
 </html>
-
-
-
 
