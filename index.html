@@ -426,6 +426,22 @@
           </div>
  
           <p class="note" id="statusNote"></p>
+          <div id="successCard" style="display:none; margin-top:14px;">
+  <div class="card padded" style="background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.16);">
+    <h2 style="margin:0 0 8px;">Спасибо! 💍</h2>
+    <p class="p" style="margin:0;">
+      Ваш ответ получен. Будем рады видеть вас <strong>21 августа 2026</strong> в усадьбе «Николаево».
+    </p>
+    <div class="badgeRow" style="margin-top:12px;">
+      <span class="badge">🕒 начало в 15:00</span>
+      <span class="badge">🖤🤍 чёрно-белый дресс-код</span>
+      <span class="badge">🚌 трансфер будет</span>
+    </div>
+    <p class="note" style="margin-top:12px;">
+      Если планы изменятся — заполните форму ещё раз или свяжитесь с организатором.
+    </p>
+  </div>
+</div>
         </form>
       </div>
     </section>
@@ -589,7 +605,15 @@
  
         localStorage.removeItem(draftKey);
         form.reset();
-        alert("Спасибо! Ответ отправлен ✅");
+       // скрываем форму
+form.style.display = "none";
+ 
+// показываем красивую плашку "Спасибо"
+const successCard = document.getElementById("successCard");
+if (successCard) {
+  successCard.style.display = "block";
+  successCard.scrollIntoView({ behavior: "smooth", block: "start" });
+}
  
       } catch (err) {
         alert("Не получилось отправить 😕 Проверьте интернет и попробуйте ещё раз.");
@@ -601,3 +625,4 @@
   </script>
 </body>
 </html>
+
