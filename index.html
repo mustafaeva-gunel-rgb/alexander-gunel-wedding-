@@ -603,9 +603,17 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
+ localStorage.removeItem(draftKey);
  
-        localStorage.removeItem(draftKey);
-        form.reset();
+// блокируем поля и кнопку, чтобы не отправляли повторно случайно
+Array.from(form.elements).forEach(el => el.disabled = true);
+ 
+// показываем красивую плашку
+const successCard = document.getElementById("successCard");
+if (successCard) {
+  successCard.style.display = "block";
+  successCard.scrollIntoView({ behavior: "smooth", block: "start" });
+}
        // скрываем форму
 form.style.display = "none";
  
@@ -626,5 +634,6 @@ if (successCard) {
   </script>
 </body>
 </html>
+
 
 
