@@ -539,6 +539,11 @@ main, .wrap{
 body::before{
   z-index: 1;
 }
+    /* чтобы фон точно был виден */
+.bgStack{ z-index: 0; }
+.bgVeil{ z-index: 1; }
+.wrap, main, .topbar{ position: relative; z-index: 2; }
+ 
  </style>
 </head>
  
@@ -549,8 +554,7 @@ body::before{
 </div>
 <div class="bgVeil" aria-hidden="true"></div>
  
-  <div class="bgSlider" aria-hidden="true"></div>
-  <div class="topbar">
+   <div class="topbar">
     <div class="inner">
       <div class="brand">
         <div class="seal">A&G</div>
@@ -1007,6 +1011,7 @@ body::before{
   </div>
  
   <script>
+    
     // ====== НАСТРОЙКИ ======
     const weddingDateLocal = new Date(2026, 7, 21, 15, 0, 0); // 7 = август
     const addressText = "Витебский район, Вороновский сельсовет, д. Дрюково, ул. Центральная, 32";
@@ -1280,20 +1285,7 @@ body::before{
       }
     }, { threshold: .12 });
     items.forEach(el => io.observe(el));
-    // ===== ФОН: 5 ФОТО, ПЛАВНАЯ СМЕНА =====
-// ВАЖНО: ссылки должны быть ПРЯМЫЕ на картинку (jpg/png/webp)
-const BG_IMAGES = [
-  "https://i.ibb.co/Nd2QbKPQ/IMG-0302.jpg",
-  "https://i.ibb.co/bMN4QBry/B2-AC3-B25-113-B-4-C73-AF84-DB8-BFEC273-F0.jpg",
-  "https://i.ibb.co/DHpQVmcZ/IMG-5025.jpg",
-  "https://i.ibb.co/jvRwDBgy/IMG-4360.png",
-  "https://i.ibb.co/ccWD9ZZD/IMG-0766.jpg",
-  "https://i.ibb.co/QFWdhsG6/IMG-4854.jpg"
-];
-
- 
-const layerA = document.querySelector(".bgLayer.a");
-const layerB = document.querySelector(".bgLayer.b");
+  
  
 let i = 0;
 let showA = true;
@@ -1323,8 +1315,52 @@ function nextBg(){
 setInterval(nextBg, 9000);
     console.log("bg script ok", BG_IMAGES.length);
   </script>
+ <script>
+  // ===== ФОН: 6 ФОТО, ПЛАВНАЯ СМЕНА =====
+  const BG_IMAGES = [
+    "https://i.ibb.co/Nd2QbKPQ/IMG-0302.jpg",
+    "https://i.ibb.co/bMN4QBry/B2-AC3-B25-113-B-4-C73-AF84-DB8-BFEC273-F0.jpg",
+    "https://i.ibb.co/DHpQVmcZ/IMG-5025.jpg",
+    "https://i.ibb.co/jvRwDBgy/IMG-4360.png",
+    "https://i.ibb.co/ccWD9ZZD/IMG-0766.jpg",
+    "https://i.ibb.co/QFWdhsG6/IMG-4854.jpg"
+  ];
+ 
+  const layerA = document.querySelector(".bgLayer.a");
+  const layerB = document.querySelector(".bgLayer.b");
+ 
+  // на всякий случай: если классы не найдены
+  if(!layerA || !layerB){
+    console.log("BG layers not found");
+  } else {
+    let i = 0;
+    let showA = true;
+ 
+    // первый фон
+    layerA.style.backgroundImage = `url("${BG_IMAGES[0]}")`;
+    layerA.classList.add("on");
+ 
+    function nextBg(){
+      i = (i + 1) % BG_IMAGES.length;
+ 
+      const showLayer = showA ? layerB : layerA;
+      const hideLayer = showA ? layerA : layerB;
+ 
+      showLayer.style.backgroundImage = `url("${BG_IMAGES[i]}")`;
+      showLayer.classList.add("on");
+      hideLayer.classList.remove("on");
+ 
+      showA = !showA;
+    }
+ 
+    setInterval(nextBg, 9000);
+    console.log("BG script ok", BG_IMAGES.length);
+  }
+</script>
+ 
 </body>
 </html>
+
 
 
 
