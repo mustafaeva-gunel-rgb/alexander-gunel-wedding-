@@ -535,14 +535,41 @@ main, .wrap{
   z-index: 2;                               /* весь контент выше фона */
 }
  
-/* если у тебя есть body::before (зерно) — пусть будет выше вуали, но ниже контента */
-body::before{
-  z-index: 1;
-}
     /* чтобы фон точно был виден */
 .bgStack{ z-index: 0; }
 .bgVeil{ z-index: 1; }
 .wrap, main, .topbar{ position: relative; z-index: 2; }
+ /* ===== BG SLIDESHOW (обязательно должно быть в CSS) ===== */
+.bgStack{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bgLayer{
+  position:absolute;
+  inset:-10%;
+  background: center/cover no-repeat;
+  filter: blur(18px);
+  transform: scale(1.08);
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.bgLayer.on{ opacity: .35; }  /* для теста делаем заметнее */
+ 
+/* белая вуаль */
+.bgVeil{
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events:none;
+  background: rgba(255,255,255,.60);
+}
+ 
+/* контент выше фона */
+.topbar{ position: sticky; z-index: 50; }
+main, .wrap{ position: relative; z-index: 2; }
  
  </style>
 </head>
@@ -1328,6 +1355,7 @@ setInterval(nextBg, 9000);
  
   const layerA = document.querySelector(".bgLayer.a");
   const layerB = document.querySelector(".bgLayer.b");
+   console.log("A:", layerA, "B:", layerB);
  
   // на всякий случай: если классы не найдены
   if(!layerA || !layerB){
@@ -1360,6 +1388,7 @@ setInterval(nextBg, 9000);
  
 </body>
 </html>
+
 
 
 
