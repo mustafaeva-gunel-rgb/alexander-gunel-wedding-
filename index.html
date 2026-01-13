@@ -522,6 +522,23 @@ https://ibb.co/XxhqBw35");
   pointer-events:none;
   background: rgba(255,255,255,.72);
 }
+    /* ===== FIX: чтобы фото-фон был виден ===== */
+body{ background: transparent !important; } /* убираем фон body, который перекрывал фото */
+ 
+.bgStack{ z-index: 0 !important; }         /* фото-слои */
+.bgVeil{ z-index: 1 !important; }          /* белая вуаль */
+ 
+.topbar{ position: sticky; z-index: 50; }  /* шапка как была */
+ 
+main, .wrap{
+  position: relative;
+  z-index: 2;                               /* весь контент выше фона */
+}
+ 
+/* если у тебя есть body::before (зерно) — пусть будет выше вуали, но ниже контента */
+body::before{
+  z-index: 1;
+}
  </style>
 </head>
  
@@ -1307,6 +1324,7 @@ setInterval(nextBg, 9000);
   </script>
 </body>
 </html>
+
 
 
 
