@@ -467,7 +467,7 @@ https://ibb.co/XxhqBw35");
 }
  
 /* Фото на фоне */
-body::after{
+::after{
   content:"";
   position: fixed;
   inset: 0;
@@ -484,7 +484,7 @@ body::after{
 }
  
 /* Белая вуаль поверх фото */
-body::before{
+::before{
   content:"";
   position: fixed;
   inset: 0;
@@ -492,10 +492,46 @@ body::before{
   background: rgba(255,255,255,.72);
   pointer-events:none;
 }
-  </style>
+  /* ===== ФОН-СЛАЙДШОУ ИЗ ФОТО ===== */
+.bgStack{
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+}
+ 
+.bgLayer{
+  position:absolute;
+  inset:-10%;
+  background: center/cover no-repeat;
+  filter: blur(18px);
+  transform: scale(1.08);
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+ 
+/* видно активный слой */
+.bgLayer.on{ opacity: .30; }  /* 0.20 слабее, 0.40 сильнее */
+ 
+/* белая вуаль для читаемости текста */
+.bgVeil{
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events:none;
+  background: rgba(255,255,255,.72);
+}
+ </style>
 </head>
  
 <body>
+  <div class="bgStack" aria-hidden="true">
+  <div class="bgLayer a"></div>
+  <div class="bgLayer b"></div>
+</div>
+<div class="bgVeil" aria-hidden="true"></div>
+ 
   <div class="bgSlider" aria-hidden="true"></div>
   <div class="topbar">
     <div class="inner">
@@ -1227,9 +1263,49 @@ body::before{
       }
     }, { threshold: .12 });
     items.forEach(el => io.observe(el));
+    // ===== ФОН: 5 ФОТО, ПЛАВНАЯ СМЕНА =====
+// ВАЖНО: ссылки должны быть ПРЯМЫЕ на картинку (jpg/png/webp)
+const BG_IMAGES = [
+  "https://ibb.co/7M2H2HB",
+  "https://ibb.co/RTXv2rCZ",
+  "https://ibb.co/Y7Yp5TD2",
+  "https://ibb.co/KpTZL5bs",
+  "https://ibb.co/XxhqBw35"
+];
+ 
+const layerA = document.querySelector(".bgLayer.a");
+const layerB = document.querySelector(".bgLayer.b");
+ 
+let i = 0;
+let showA = true;
+ 
+// поставить первый фон
+layerA.style.backgroundImage = `url("${BG_IMAGES[0]}")`;
+layerA.classList.add("on");
+ 
+function nextBg(){
+  i = (i + 1) % BG_IMAGES.length;
+ 
+  const showLayer = showA ? layerB : layerA;  // на какой слой загрузим следующее
+  const hideLayer = showA ? layerA : layerB;  // какой спрячем
+ 
+  // загружаем картинку в невидимый слой
+  showLayer.style.backgroundImage = `url("${BG_IMAGES[i]}")`;
+ 
+  // плавно показать новый
+  showLayer.classList.add("on");
+  // плавно скрыть старый
+  hideLayer.classList.remove("on");
+ 
+  showA = !showA;
+}
+ 
+// менять каждые 9 секунд (можно 7000..12000)
+setInterval(nextBg, 9000);
   </script>
 </body>
 </html>
+
 
 
 
